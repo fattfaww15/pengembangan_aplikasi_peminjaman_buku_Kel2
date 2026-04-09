@@ -1,13 +1,18 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Add Book') }}
-        </h2>
+        <div>
+            <h2 class="font-serif text-3xl font-light text-gray-900 tracking-tight">
+                {{ __('Tambah Buku Baru') }}
+            </h2>
+            <p class="mt-2 text-sm text-gray-500 max-w-2xl">
+                Masukkan informasi lengkap buku untuk menambahkannya ke koleksi.
+            </p>
+        </div>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
                 <div class="p-6">
                     <form method="POST" action="{{ route('books.store') }}">
                         @csrf
@@ -59,7 +64,7 @@
 
                         <div class="flex items-center justify-end">
                             <a href="{{ route('books.index') }}" class="mr-4 text-gray-600 hover:text-gray-900">Batal</a>
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-2xl shadow-sm transition">
                                 Buat Buku
                             </button>
                         </div>

@@ -1,8 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
+        <div>
+            <h2 class="font-serif text-3xl font-light text-gray-900 tracking-tight">
+                {{ __('Pengaturan Profil') }}
+            </h2>
+            <p class="mt-2 text-sm text-gray-500 max-w-2xl">
+                Kelola informasi akun, ubah password, dan pengaturan keamanan lainnya.
+            </p>
+        </div>
     </x-slot>
 
     <div class="py-12">

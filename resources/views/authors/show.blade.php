@@ -1,18 +1,23 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Author Details') }}
-            </h2>
-            <a href="{{ route('authors.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                Back to Authors
+            <div>
+                <h2 class="font-serif text-3xl font-light text-gray-900 tracking-tight">
+                    {{ __('Detail Penulis') }}
+                </h2>
+                <p class="mt-2 text-sm text-gray-500 max-w-2xl">
+                    Informasi penulis dan daftar karya-karya mereka.
+                </p>
+            </div>
+            <a href="{{ route('authors.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-2xl shadow-sm transition">
+                Kembali
             </a>
         </div>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
                 <div class="p-6">
                     <div class="mb-6">
                         <h3 class="text-lg font-medium text-gray-900">{{ $author->name }}</h3>

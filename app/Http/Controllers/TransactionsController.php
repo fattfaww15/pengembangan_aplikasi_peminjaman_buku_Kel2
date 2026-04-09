@@ -46,38 +46,39 @@ class TransactionsController extends Controller
 
         // Only regular users can create transactions
         if ($user->is_admin) {
-            abort(403, 'Admins cannot create transactions directly.');
+            abort(403, 'Admin tidak dapat membuat transaksi peminjaman secara langsung.');
         }
 
         $request->validate([
             'book_id' => 'required|exists:books,id',
+            'borrowed_at' => 'required|date|before_or_equal:today',
             'due_at' => 'required|date|after:today',
         ]);
 
         $book = Book::find($request->book_id);
         if ($book->stock <= 0) {
-            return back()->withErrors(['book_id' => 'Book is out of stock.']);
+            return back()->withErrors(['book_id' => 'Buku sedang tidak tersedia (stok habis).']);
         }
 
-        // Check if user already has this book borrowed
+        // Check if user already has this book borrowed (pending or borrowed status)
         $existingTransaction = Transaction::where('user_id', $user->id)
             ->where('book_id', $request->book_id)
-            ->where('status', 'borrowed')
+            ->whereIn('status', ['borrowed', 'pending'])
             ->first();
 
         if ($existingTransaction) {
-            return back()->withErrors(['book_id' => 'You already have this book borrowed.']);
+            return back()->withErrors(['book_id' => 'Anda sudah meminjam buku ini. Kembalikan terlebih dahulu sebelum meminjam lagi.']);
         }
 
         Transaction::create([
             'user_id' => $user->id,
             'book_id' => $request->book_id,
-            'borrowed_at' => now(),
+            'borrowed_at' => $request->borrowed_at,
             'due_at' => $request->due_at,
             'status' => 'pending', // Changed to pending for admin approval
         ]);
 
-        return redirect()->route('transactions.index')->with('success', 'Borrow request submitted successfully. Please wait for admin approval.');
+        return redirect()->route('transactions.index')->with('success', 'Permintaan peminjaman berhasil dikirim. Silahkan tunggu persetujuan dari admin.');
     }
 
     public function show(Transaction $transaction)
