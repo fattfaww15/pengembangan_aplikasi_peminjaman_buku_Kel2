@@ -142,11 +142,11 @@ class TransactionsController extends Controller
             $transaction->book->decrement('stock');
         } elseif ($request->status === 'rejected') {
             $request->validate([
-                'rejection_reason' => 'required|string',
+                'rejection_reason' => 'nullable|string',
             ]);
             $transaction->update([
                 'status' => 'rejected',
-                'rejection_reason' => $request->rejection_reason,
+                'rejection_reason' => $request->rejection_reason ?? '-',
             ]);
         }
 
