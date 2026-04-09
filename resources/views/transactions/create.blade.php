@@ -13,7 +13,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="group bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-                <div class="p-6">
+                <div class="p-6" x-data="dateHandler()">
                     <form method="POST" action="{{ route('transactions.store') }}">
                         @csrf
 
@@ -26,7 +26,7 @@
                                     id="book_search" 
                                     x-model="searchQuery"
                                     @input="filterBooks()"
-                                    @focus="open = true"
+                                    @focus="open = true; filteredBooks = allBooks"
                                     @keydown.escape="open = false"
                                     @keydown.down="highlightedIndex = Math.min(highlightedIndex + 1, filteredBooks.length - 1)"
                                     @keydown.up="highlightedIndex = Math.max(highlightedIndex - 1, 0)"
@@ -90,7 +90,8 @@
                                 name="borrowed_at" 
                                 id="borrowed_at" 
                                 value="{{ old('borrowed_at', date('Y-m-d')) }}" 
-                                max="{{ date('Y-m-d') }}"
+                                min="{{ date('Y-m-d') }}"
+                                @change="updateDueMin()"
                                 class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" 
                                 required
                             >
@@ -102,7 +103,7 @@
                         <!-- Due Date -->
                         <div class="mb-4">
                             <label for="due_at" class="block text-sm font-medium text-gray-700">Tanggal Jatuh Tempo</label>
-                            <input type="date" name="due_at" id="due_at" value="{{ old('due_at') }}" min="{{ date('Y-m-d', strtotime('+1 day')) }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
+                            <input type="date" name="due_at" id="due_at" value="{{ old('due_at') }}" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
                             @error('due_at')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -185,6 +186,28 @@
 
                     // Update the hidden input
                     document.getElementById('book_id').value = book.id;
+                }
+            }
+        }
+
+        function dateHandler() {
+            return {
+                updateDueMin() {
+                    const borrowedAt = document.getElementById('borrowed_at').value;
+                    const dueAt = document.getElementById('due_at');
+                    
+                    if (borrowedAt) {
+                        // Set min to the day after borrowed_at
+                        const nextDay = new Date(borrowedAt);
+                        nextDay.setDate(nextDay.getDate() + 1);
+                        const minDate = nextDay.toISOString().split('T')[0];
+                        dueAt.min = minDate;
+                        
+                        // If current due_at is before min, reset it
+                        if (dueAt.value && dueAt.value < minDate) {
+                            dueAt.value = minDate;
+                        }
+                    }
                 }
             }
         }

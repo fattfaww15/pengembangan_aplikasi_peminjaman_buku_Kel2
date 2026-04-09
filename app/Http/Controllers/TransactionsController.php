@@ -51,8 +51,8 @@ class TransactionsController extends Controller
 
         $request->validate([
             'book_id' => 'required|exists:books,id',
-            'borrowed_at' => 'required|date|before_or_equal:today',
-            'due_at' => 'required|date|after:today',
+            'borrowed_at' => 'required|date|after_or_equal:today',
+            'due_at' => 'required|date|after:borrowed_at',
         ]);
 
         $book = Book::find($request->book_id);
