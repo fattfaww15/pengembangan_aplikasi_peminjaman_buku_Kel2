@@ -75,6 +75,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Authentication Username
+    |--------------------------------------------------------------------------
+    |
+    | This option defines the username field used for authentication.
+    | By default, Laravel uses 'email', but we can change it to 'nis'.
+    |
+    */
+
+    'username' => 'nis',
+
+    /*
+    |--------------------------------------------------------------------------
     | Resetting Passwords
     |--------------------------------------------------------------------------
     |

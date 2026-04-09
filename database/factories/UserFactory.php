@@ -28,7 +28,6 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'nis' => fake()->unique()->randomNumber(8),
             'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
             'is_admin' => false,
             'is_active' => true,
         ];
